@@ -19,19 +19,6 @@ jobs:
           jar cf HelloWorld.jar -C out/production/HelloWorld . 
           mv *.jar out/artifacts/HelloWorld_jar/
 
-      - name: Configure Git Use
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Add and Commit Changes
-        run: |
-          git add *.jar 
-          git commit -m "Add jar files via GitHub Action"
-
-      - name: Push Changes
-        run: git push
-
       - name: Upload JAR 
         uses: actions/upload-artifact@v4
         with:
