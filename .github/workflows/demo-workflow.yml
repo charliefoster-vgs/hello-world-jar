@@ -91,6 +91,12 @@ jobs:
       with:
         name: signed-input.jar
 
+    - name: List base signed dir 
+      run: ls -al *
+
+    - name: List workspace signed dir 
+      run: ls -al ${{github.workspace}}/*
+
     - name: Verify Signed JAR
       run: |
         jarsigner -verify -verbose -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} ${{github.workspace}}/signed-input.jar
