@@ -19,10 +19,16 @@ jobs:
       - name: Compile Java 
         run: javac src/com/example/helloworld/*.java 
 
+      - name: List base dir 
+        run: ls -al 
+
       - name: Create JAR
         run: |
           jar cf HelloWorld.jar -C out/production/HelloWorld . 
           mv *.jar out/artifacts/HelloWorld_jar/
+   
+      - name: List artifiacts dir 
+        run: ls -al  out/artifacts/HelloWorld_jar/*
 
       - name: Upload JAR 
         uses: actions/upload-artifact@v4
