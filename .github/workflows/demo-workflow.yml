@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest # The type of runner that the job will run on
     defaults:
       run:
-        working-directory: ./HelloWorld
+        working-directory: ./HelloWorld_jar
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4 # Action to check out the repository's code
