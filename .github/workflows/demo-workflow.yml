@@ -1,8 +1,8 @@
 name: Demo GitHub Actions Workflow
 
-    on: [push]
+on: [push]
 
-    jobs:
+jobs:
       discover-workflows:
         runs-on: ubuntu-latest # The type of runner that the job will run on
 
