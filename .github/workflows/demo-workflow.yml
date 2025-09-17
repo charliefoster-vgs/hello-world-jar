@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest # The type of runner that the job will run on
     defaults:
-      runs:
+      run:
         working-directory: ./HelloWorld
       steps:
         - name: Checkout repository code
