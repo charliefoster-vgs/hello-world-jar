@@ -9,22 +9,22 @@ jobs:
     defaults:
       run:
         working-directory: ./HelloWorld
-      steps:
-        - name: Checkout repository code
-          uses: actions/checkout@v4 # Action to check out the repository's code
-        - run: javac *.java
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4 # Action to check out the repository's code
+      - run: javac *.java
 
-        - name: Create JAR
-          run: |
-            jar cf HelloWorld.jar -C out/production/HelloWorld . 
-            mv *.jar out/artifacts/HelloWorld_jar/
+      - name: Create JAR
+        run: |
+          jar cf HelloWorld.jar -C out/production/HelloWorld . 
+          mv *.jar out/artifacts/HelloWorld_jar/
 
-        - name: Upload JAR 
-          uses: actions/upload-artifact@v4
-          with:
-            name: HelloWorld.jar
-            path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
-            retention-days: 1
+      - name: Upload JAR 
+        uses: actions/upload-artifact@v4
+        with:
+          name: HelloWorld.jar
+          path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
+          retention-days: 1
 
 sign:
   runs-on: ubuntu-latest # The type of runner that the job will run on
