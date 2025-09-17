@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest # The type of runner that the job will run on
     defaults:
       run:
-        working-directory: ./HelloWorld_jar
+        working-directory: ./HelloWorld
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4 # Action to check out the repository's code
@@ -18,6 +18,19 @@ jobs:
         run: |
           jar cf HelloWorld.jar -C out/production/HelloWorld . 
           mv *.jar out/artifacts/HelloWorld_jar/
+
+      - name: Configure Git Use
+        run: |
+          git config --global user.name "charliefoster-vgs"
+          git config --global user.email "charliefoster@hotmail.com"
+
+      - name: Add and Commit Changes
+        run: |
+          git add *.jar 
+          git commit -m "Add jar files via GitHub Action"
+
+      - name: Push Changes
+        run: git push
 
       - name: Upload JAR 
         uses: actions/upload-artifact@v4
