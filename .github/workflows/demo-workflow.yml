@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4 # Action to check out the repository's code
-      - run: javac *.java
+      - run: src/com/example/helloworld/*.java 
 
       - name: Create JAR
         run: |
