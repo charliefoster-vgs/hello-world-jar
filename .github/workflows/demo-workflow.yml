@@ -89,7 +89,7 @@ jobs:
     - name: Download Signed JAR
       uses: actions/download-artifact@v4 
       with:
-        name: signed-input.jar
+        name: signed-HelloWorld.jar
 
     - name: List base signed dir 
       run: ls -al *
@@ -99,4 +99,4 @@ jobs:
 
     - name: Verify Signed JAR
       run: |
-        jarsigner -verify -verbose -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} ${{github.workspace}}/signed-input.jar
+        jarsigner -verify -verbose -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} ${{github.workspace}}/signed-HelloWorld.jar
