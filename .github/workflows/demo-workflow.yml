@@ -1,17 +1,58 @@
 name: Demo GitHub Actions Workflow
 
-on: [push]
+on: [workflow-dispatch]
 
 jobs:
-      discover-workflows:
-        runs-on: ubuntu-latest # The type of runner that the job will run on
+  build:
+    runs-on: ubuntu-latest # The type of runner that the job will run on
+    defaults:
+      runs:
+        working-directory: ./HelloWorld
+      steps:
+        - name: Checkout repository code
+          uses: actions/checkout@v4 # Action to check out the repository's code
+        - run: javac *.java
 
-        steps:
-          - name: Checkout repository code
-            uses: actions/checkout@v4 # Action to check out the repository's code
+        - name: Create JAR
+          run: |
+            jar cf HelloWorld.jar -C out/production/HelloWorld . 
+            mv *.jar out/artifacts/HelloWorld_jar/
 
-          - name: Print a greeting message
-            run: echo "Hello from GitHub Actions! This workflow was triggered by a push event."
+        - name: Upload JAR 
+          uses: actions/upload-artifact@v4
+          with:
+            name: HelloWorld.jar
+            path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
+            retention-days: 1
 
-          - name: List files in the repository
-            run: ls -la # Command to list all files and directories
+sign:
+  runs-on: ubuntu-latest # The type of runner that the job will run on
+  needs: build 
+  steps:
+
+  - name: Download artifact from Build-Java
+    uses: actions/download-artifact@v4
+    with:
+      name: HelloWorld.jar
+
+  - name: SignServer Signing
+    uses: Keyfactor/signserver-signing-action@v1.0.0
+    with:
+      endpoint: ${{secrets.SIGNSERVER_URL}} 
+      file-path: ${{github.workspace}}/HelloWorld.jar 
+      worker-name: JArchiveSigner
+      worker-type: JArchiveSigner
+
+verify:
+  runs-on: ubuntu-latest # The type of runner that the job will run on
+  needs: sign 
+  steps:
+
+  - name: Download Signed JAR
+    uses: action/download-artifact@v4 
+    with:
+      name: signed-input.jar
+
+  - name: Verify JAR
+    run: |
+      jarsigner -verify -verbose ${{github.workspace}}/signed-input.jar
