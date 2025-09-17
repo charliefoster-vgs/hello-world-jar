@@ -1,0 +1,17 @@
+name: Demo GitHub Actions Workflow
+
+    on: [push] # This workflow runs on every push to the repository
+
+    jobs:
+      discover-workflows:
+        runs-on: ubuntu-latest # The type of runner that the job will run on
+
+        steps:
+          - name: Checkout repository code
+            uses: actions/checkout@v4 # Action to check out the repository's code
+
+          - name: Print a greeting message
+            run: echo "Hello from GitHub Actions! This workflow was triggered by a push event."
+
+          - name: List files in the repository
+            run: ls -la # Command to list all files and directories
