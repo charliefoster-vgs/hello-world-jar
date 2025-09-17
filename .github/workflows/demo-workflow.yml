@@ -16,7 +16,7 @@ jobs:
 
       - name: Create JAR
         run: |
-          jar cf HelloWorld.jar -C out/production/HelloWorld . 
+          jar cf HelloWorld.jar -C HelloWorld . 
           mv *.jar out/artifacts/HelloWorld_jar/
 
       - name: Upload JAR 
