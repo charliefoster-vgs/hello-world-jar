@@ -1,6 +1,6 @@
 name: Demo GitHub Actions Workflow
 
-    on: [push] # This workflow runs on every push to the repository
+    on: push # This workflow runs on every push to the repository
 
     jobs:
       discover-workflows:
