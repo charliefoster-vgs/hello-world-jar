@@ -67,7 +67,7 @@ jobs:
 
     - name: Import Intermediate CA Certificate into Keystore
       run: |
-        keytool -import -alias myintermediatecacert -file intermedidate_ca.cer -keystore truststore.jks -storepass changeit -noprompt
+        keytool -import -alias myintermediatecacert -file intermediate_ca.cer -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} -noprompt
 
     - name: Download Signed JAR
       uses: actions/download-artifact@v4 
