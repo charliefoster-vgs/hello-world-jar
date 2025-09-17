@@ -47,6 +47,9 @@ jobs:
       with:
         name: HelloWorld.jar
 
+    - name: List workspace
+      run: ls -al ${{github.workspace}}
+
     - name: SignServer Signing
       uses: Keyfactor/signserver-signing-action@v1.0.0
       with:
