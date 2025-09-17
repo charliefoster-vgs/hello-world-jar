@@ -26,34 +26,34 @@ jobs:
           path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
           retention-days: 1
 
-sign:
-  runs-on: ubuntu-latest # The type of runner that the job will run on
-  needs: build 
-  steps:
+  sign:
+    runs-on: ubuntu-latest # The type of runner that the job will run on
+    needs: build 
+    steps:
 
-  - name: Download artifact from Build-Java
-    uses: actions/download-artifact@v4
-    with:
-      name: HelloWorld.jar
+    - name: Download artifact from Build-Java
+      uses: actions/download-artifact@v4
+      with:
+        name: HelloWorld.jar
 
-  - name: SignServer Signing
-    uses: Keyfactor/signserver-signing-action@v1.0.0
-    with:
-      endpoint: ${{secrets.SIGNSERVER_URL}} 
-      file-path: ${{github.workspace}}/HelloWorld.jar 
-      worker-name: JArchiveSigner
-      worker-type: JArchiveSigner
+    - name: SignServer Signing
+      uses: Keyfactor/signserver-signing-action@v1.0.0
+      with:
+        endpoint: ${{secrets.SIGNSERVER_URL}} 
+        file-path: ${{github.workspace}}/HelloWorld.jar 
+        worker-name: JArchiveSigner
+        worker-type: JArchiveSigner
 
-verify:
-  runs-on: ubuntu-latest # The type of runner that the job will run on
-  needs: sign 
-  steps:
+  verify:
+    runs-on: ubuntu-latest # The type of runner that the job will run on
+    needs: sign 
+    steps:
 
-  - name: Download Signed JAR
-    uses: action/download-artifact@v4 
-    with:
-      name: signed-input.jar
+    - name: Download Signed JAR
+      uses: action/download-artifact@v4 
+      with:
+        name: signed-input.jar
 
-  - name: Verify JAR
-    run: |
-      jarsigner -verify -verbose ${{github.workspace}}/signed-input.jar
+    - name: Verify JAR
+      run: |
+        jarsigner -verify -verbose ${{github.workspace}}/signed-input.jar
