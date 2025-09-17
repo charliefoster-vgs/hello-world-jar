@@ -37,6 +37,9 @@ jobs:
           path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
           retention-days: 1
 
+      - name: List upload dir 
+        run: ls -al  ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/*
+
   sign:
     runs-on: ubuntu-latest # The type of runner that the job will run on
     needs: build 
