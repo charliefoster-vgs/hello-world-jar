@@ -1,6 +1,6 @@
 name: Demo GitHub Actions Workflow
 
-    on: push 
+    on: [push]
 
     jobs:
       discover-workflows:
