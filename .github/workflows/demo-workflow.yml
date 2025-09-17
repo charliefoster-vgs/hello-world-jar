@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4 # Action to check out the repository's code
+        run: ls -al $GITHUB_WORKSPACE/src
       - run: javac src/com/example/helloworld/*.java 
 
       - name: Create JAR
