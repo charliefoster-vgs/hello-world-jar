@@ -1,0 +1,103 @@
+name: Demo GitHub Actions Workflow
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # The type of runner that the job will run on
+    defaults:
+      run:
+        working-directory: ./HelloWorld
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4 # Action to check out the repository's code
+
+      - name: List src dir 
+        run: ls -al src/com/example/helloworld/*
+
+      - name: Compile Java 
+        run: javac src/com/example/helloworld/*.java 
+
+      - name: List base dir 
+        run: ls -al 
+
+      - name: Create JAR
+        run: |
+          jar cf HelloWorld.jar -C out/production/HelloWorld . 
+          mv *.jar out/artifacts/HelloWorld_jar/
+   
+      - name: List artifiacts dir 
+        run: ls -al  out/artifacts/HelloWorld_jar/*
+
+      - name: Upload JAR 
+        uses: actions/upload-artifact@v4
+        with:
+          name: HelloWorld.jar
+          path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
+          retention-days: 1
+
+      - name: List upload dir 
+        run: ls -al  ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/*
+
+  sign:
+    runs-on: ubuntu-latest # The type of runner that the job will run on
+    needs: build 
+    steps:
+
+    - name: Download artifact from Build-Java
+      uses: actions/download-artifact@v4
+      with:
+        name: HelloWorld.jar
+
+    - name: List workspace
+      run: ls -al ${{github.workspace}}
+
+    - name: SignServer Signing
+      curl -F "workerName=JArchiveSigner" -F "file=@${{github.workspace}}/HelloWorld.jar" ${{secrets.SIGNSERVER_URL}} > "$signed-HelloWorld.jar"
+
+    - name: Upload JAR 
+      uses: actions/upload-artifact@v4
+      with:
+        name: signed-HelloWorld.jar
+        path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/signed-HelloWorld.jar
+        retention-days: 1
+
+  verify:
+    runs-on: ubuntu-latest # The type of runner that the job will run on
+    needs: sign 
+    steps:
+      - name: Decode Root CA Certificate
+        env:
+          ROOT_CERT_B64: ${{secrets.ROOT_CA_BASE64}} # Store your base64 encoded certificate in GitHub Secrets
+        run: |
+          echo "$ROOT_CERT_B64" | base64 --decode > root_ca.cer
+
+      - name: Decode Intermediate CA Certificate
+        env:
+          INTERMEDIATE_CERT_B64: ${{secrets.INTERMEDIATE_CA_BASE64}} # Store your base64 encoded certificate in GitHub Secrets
+        run: |
+          echo "$INTERMEDIATE_CERT_B64" | base64 --decode > intermediate_ca.cer
+
+      - name: Import Root CA Certificate into Keystore
+        run: |
+          keytool -import -alias myrootcacert -file root_ca.cer -keystore truststore.jks -storepass changeit -noprompt
+
+      - name: Import Intermediate CA Certificate into Keystore
+        run: |
+          keytool -import -alias myintermediatecacert -file intermediate_ca.cer -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} -noprompt
+
+      - name: Download Signed JAR
+        uses: actions/download-artifact@v4 
+        with:
+          name: signed-HelloWorld.jar
+
+      - name: List base signed dir 
+        run: ls -al *
+
+      - name: List workspace signed dir 
+        run: ls -al ${{github.workspace}}/*
+
+      - name: Verify Signed JAR
+        run: |
+          jarsigner -verify -verbose -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} ${{github.workspace}}/signed-HelloWorld.jar
