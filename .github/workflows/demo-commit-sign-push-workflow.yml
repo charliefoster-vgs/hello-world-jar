@@ -1,7 +1,6 @@
 name: Demo Commit PGP GitHub Actions Workflow
 
-on:  
-  workflow_dispatch:
+on: [push]  
 
 jobs:
   process_files:
