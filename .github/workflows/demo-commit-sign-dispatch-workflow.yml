@@ -31,7 +31,6 @@ jobs:
     runs-on: ubuntu-latest # The type of runner that the job will run on
     needs: sign 
     steps:
-
       - name: Loop through files in a directory
         run: |
           # Define the directory to loop through
