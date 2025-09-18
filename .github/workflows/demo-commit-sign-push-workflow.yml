@@ -3,7 +3,7 @@ name: Demo Commit Sign Push GitHub Actions Workflow
 on: [push]  
 
 jobs:
-  sign:
+  sign-verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,34 +27,3 @@ jobs:
               $SCRIPTS_DIR/pgp-verify.sh "$file.asc" "$file"
             fi
           done
-
-  verify:
-    runs-on: ubuntu-latest # The type of runner that the job will run on
-    needs: sign 
-    steps:
-
-    - name: Decode Root CA Certificate
-      env:
-        ROOT_CERT_B64: ${{secrets.ROOT_CA_BASE64}} # Store your base64 encoded certificate in GitHub Secrets
-      run: |
-        echo "$ROOT_CERT_B64" | base64 --decode > root_ca.cer
-
-    - name: Decode Intermediate CA Certificate
-      env:
-        INTERMEDIATE_CERT_B64: ${{secrets.INTERMEDIATE_CA_BASE64}} # Store your base64 encoded certificate in GitHub Secrets
-      run: |
-        echo "$INTERMEDIATE_CERT_B64" | base64 --decode > intermediate_ca.cer
-
-    - name: Import Root CA Certificate into Keystore
-      run: |
-        keytool -import -alias myrootcacert -file root_ca.cer -keystore truststore.jks -storepass changeit -noprompt
-
-    - name: Import Intermediate CA Certificate into Keystore
-      run: |
-        keytool -import -alias myintermediatecacert -file intermediate_ca.cer -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} -noprompt
-
-    - name: List base signed dir 
-      run: ls -al *
-
-    - name: List workspace signed dir 
-      run: ls -al ${{github.workspace}}/*
