@@ -12,7 +12,7 @@ jobs:
 
       - name: Import PGP Public Key
         run: |
-          echo ${{secrets.PGP_PUBLIC_KEY | gpg --import
+          echo ${{secrets.PGP_PUBLIC_KEY}} | gpg --import
         env:
           PGP_PUBLIC_KEY: ${{secrets.PGP_PUBLIC_KEY}}
 
