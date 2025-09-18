@@ -15,7 +15,9 @@ jobs:
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
           SCRIPT_DIR="./scripts"
-
+          echo ${{secrets.PGP_PUBLIC_KEY_B64}} | base64 --decode > pgp_public_key.asc 
+          gpg --import pgp_public_key.asc
+  
           # Loop through each file in the target directory
           for file in "$TARGET_DIR"/*; do
             if [ -f "$file" ]; then # Check if it's a regular file
