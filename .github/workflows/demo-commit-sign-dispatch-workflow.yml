@@ -24,38 +24,27 @@ jobs:
               ls -al 
               cat "$file.asc"
               cat "$file"
-              ls -al $SCRIPTS_DIR
-              $SCRIPTS_DIR/pgp-verify.sh "$file.asc" "$file"
             fi
           done
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
-    needs: process_files 
+    needs: sign 
     steps:
 
-    - name: Decode Root CA Certificate
-      env:
-        ROOT_CERT_B64: ${{secrets.ROOT_CA_BASE64}} # Store your base64 encoded certificate in GitHub Secrets
-      run: |
-        echo "$ROOT_CERT_B64" | base64 --decode > root_ca.cer
+      - name: Loop through files in a directory
+        run: |
+          # Define the directory to loop through
+          TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
+          SCRIPTS_DIR="./scripts"
 
-    - name: Decode Intermediate CA Certificate
-      env:
-        INTERMEDIATE_CERT_B64: ${{secrets.INTERMEDIATE_CA_BASE64}} # Store your base64 encoded certificate in GitHub Secrets
-      run: |
-        echo "$INTERMEDIATE_CERT_B64" | base64 --decode > intermediate_ca.cer
-
-    - name: Import Root CA Certificate into Keystore
-      run: |
-        keytool -import -alias myrootcacert -file root_ca.cer -keystore truststore.jks -storepass changeit -noprompt
-
-    - name: Import Intermediate CA Certificate into Keystore
-      run: |
-        keytool -import -alias myintermediatecacert -file intermediate_ca.cer -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} -noprompt
-
-    - name: List base signed dir 
-      run: ls -al *
-
-    - name: List workspace signed dir 
-      run: ls -al ${{github.workspace}}/*
+          # Loop through each file in the target directory
+          for file in "$TARGET_DIR"/*; do
+            if [ -f "$file" ]; then # Check if it's a regular file
+              echo "Processing file: $file"
+              ls -al 
+              cat "$file.asc"
+              cat "$file"
+              $SCRIPTS_DIR/pgp-verify.sh "$file.asc" "$file"
+            fi
+          done

@@ -1,9 +1,9 @@
-name: Demo Commit PGP GitHub Actions Workflow
+name: Demo Commit Sign Push GitHub Actions Workflow
 
 on: [push]  
 
 jobs:
-  process_files:
+  sign:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -30,7 +30,7 @@ jobs:
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
-    needs: process_files 
+    needs: sign 
     steps:
 
     - name: Decode Root CA Certificate
