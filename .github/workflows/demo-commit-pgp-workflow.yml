@@ -10,16 +10,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Import PGP Support 
-        uses: crazy-max/ghaction-import-gpg 
-
-      - name: Import PGP Public Key
-        run: echo ${{secrets.PGP_PUBLIC_KEY}} | gpg --import
-
       - name: Loop through files in a directory
         run: |
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
+          SCRIPTS_DIR"./scripts
 
           # Loop through each file in the target directory
           for file in "$TARGET_DIR"/*; do
@@ -29,7 +24,7 @@ jobs:
               ls -al 
               cat "$file.asc"
               cat "$file"
-              # gpg --verify "$file.asc" "$file"
+              $SCRIPTS_DIR/gpg-verify.sh
             fi
           done
 
