@@ -1,7 +1,6 @@
 name: Demo Commit GitHub Actions Workflow
 
-on: 
-  workflow_dispatch:
+on: [push] 
 
 jobs:
   build:
