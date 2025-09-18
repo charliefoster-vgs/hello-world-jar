@@ -27,7 +27,7 @@ jobs:
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
-    needs: process_individual_files 
+    needs: process_files 
     steps:
 
     - name: Decode Root CA Certificate
