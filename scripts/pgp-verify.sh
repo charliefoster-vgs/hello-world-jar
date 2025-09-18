@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PGP_PUBLIC_KEY_FILE="./OpenPGPSigner-signer00003.asc"
+PGP_PUBLIC_KEY_FILE="./scripts/OpenPGPSigner-signer00003.asc"
 
 echo $PGP_PUBLIC_KEY
 
