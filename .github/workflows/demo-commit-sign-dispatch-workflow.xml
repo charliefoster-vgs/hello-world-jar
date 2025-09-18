@@ -1,4 +1,4 @@
-name: Demo Commit PGP GitHub Actions Workflow
+name: Demo Commit Sign Dispatch GitHub Actions Workflow
 
 on:  
   workflow_dispatch:
