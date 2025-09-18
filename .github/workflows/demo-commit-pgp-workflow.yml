@@ -11,8 +11,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Import PGP Public Key
-        run: |
-          echo ${{secrets.PGP_PUBLIC_KEY}} | gpg --import
+        uses: crazy-max/ghaction-import-gpg 
+        run: echo ${{secrets.PGP_PUBLIC_KEY}} | gpg --import
 
       - name: Loop through files in a directory
         run: |
