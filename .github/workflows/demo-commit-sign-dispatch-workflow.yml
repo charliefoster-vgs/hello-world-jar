@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  sign:
+  sign-verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Loop through files in a directory
+      - name: Loop through source files 
         run: |
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
@@ -21,29 +21,10 @@ jobs:
             if [ -f "$file" ]; then # Check if it's a regular file
               echo "Processing file: $file"
               curl -F "workerName=OpenPGPSigner" -F "file=@$file" ${{secrets.SIGNSERVER_URL}} > "$file.asc"
-              ls -al 
+              ls -al $TARGET_DIR
               cat "$file.asc"
               cat "$file"
-            fi
-          done
-
-  verify:
-    runs-on: ubuntu-latest # The type of runner that the job will run on
-    needs: sign 
-    steps:
-      - name: Loop through files in a directory
-        run: |
-          # Define the directory to loop through
-          TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
-          SCRIPTS_DIR="./scripts"
-
-          # Loop through each file in the target directory
-          for file in "$TARGET_DIR"/*; do
-            if [ -f "$file" ]; then # Check if it's a regular file
-              echo "Processing file: $file"
-              ls -al 
-              cat "$file.asc"
-              cat "$file"
+              ls -al $SCRIPTS_DIR
               $SCRIPTS_DIR/pgp-verify.sh "$file.asc" "$file"
             fi
           done

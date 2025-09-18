@@ -9,7 +9,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Loop through files in a directory
+      - name: Loop through source files
         run: |
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
