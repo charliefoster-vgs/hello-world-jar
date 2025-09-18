@@ -13,8 +13,6 @@ jobs:
       - name: Import PGP Public Key
         run: |
           echo ${{secrets.PGP_PUBLIC_KEY}} | gpg --import
-        env:
-          PGP_PUBLIC_KEY: ${{secrets.PGP_PUBLIC_KEY}}
 
       - name: Loop through files in a directory
         run: |
