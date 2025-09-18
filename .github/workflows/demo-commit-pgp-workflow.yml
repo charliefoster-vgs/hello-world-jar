@@ -34,11 +34,6 @@ jobs:
             fi
           done
 
-      - name: List downloaded file
-        run: |
-          echo "Listing the downloaded file:"
-          ls -al 
-
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
     needs: process_files 
