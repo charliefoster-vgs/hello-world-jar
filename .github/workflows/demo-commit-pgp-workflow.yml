@@ -13,8 +13,6 @@ jobs:
       - name: Loop through files in a directory
         run: |
           # Define the directory to loop through
-          # echo ${{secrets.PGP_PUBLIC_KEY_B64}} | base64 --decode > pgp_public_key.asc 
-          # echo pgp_public_key.asc | gpg --import 
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
 
           # Loop through each file in the target directory
