@@ -19,7 +19,7 @@ jobs:
         run: ls -al 
 
       - name: Move Java
-      run: |
+        run: |
         mv HelloWorld.java out/artifacts/HelloWorld_java/
 
       - name: Upload Java
