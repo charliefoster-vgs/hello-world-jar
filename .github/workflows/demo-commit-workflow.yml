@@ -81,12 +81,7 @@ jobs:
     - name: Download Signed Java
       uses: actions/download-artifact@v4 
       with:
-        name: signed-input.java
-
-    - name: Download Signed Java
-      uses: actions/download-artifact@v4 
-      with:
-        name: signed-input.asc
+        name: signed-input
 
     - name: List base signed dir 
       run: ls -al *
