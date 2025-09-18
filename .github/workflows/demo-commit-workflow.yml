@@ -16,29 +16,18 @@ jobs:
       - name: List src dir 
         run: ls -al src/com/example/helloworld/*
 
-      - name: Compile Java 
-        run: javac src/com/example/helloworld/*.java 
-
       - name: List base dir 
         run: ls -al 
-
-      - name: Create JAR
-        run: |
-          jar cf HelloWorld.jar -C out/production/HelloWorld . 
-          mv *.jar out/artifacts/HelloWorld_jar/
-   
-      - name: List artifiacts dir 
-        run: ls -al  out/artifacts/HelloWorld_jar/*
 
       - name: Upload JAR 
         uses: actions/upload-artifact@v4
         with:
-          name: HelloWorld.jar
-          path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/HelloWorld.jar
+          name: HelloWorld.java
+          path: ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_java/HelloWorld.java
           retention-days: 1
 
       - name: List upload dir 
-        run: ls -al  ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_jar/*
+        run: ls -al  ${{github.workspace}}/HelloWorld/out/artifacts/HelloWorld_java/*
 
   sign:
     runs-on: ubuntu-latest # The type of runner that the job will run on
@@ -48,7 +37,7 @@ jobs:
     - name: Download artifact from Build-Java
       uses: actions/download-artifact@v4
       with:
-        name: HelloWorld.jar
+        name: HelloWorld.java
 
     - name: List workspace
       run: ls -al ${{github.workspace}}
@@ -57,9 +46,9 @@ jobs:
       uses: Keyfactor/signserver-signing-action@v1.0.0
       with:
         endpoint: ${{secrets.SIGNSERVER_URL}} 
-        file-path: ${{github.workspace}}/HelloWorld.jar 
-        worker-name: JArchiveSigner
-        worker-type: JArchiveSigner
+        file-path: ${{github.workspace}}/HelloWorld.java
+        worker-name: OpenPGPSigner
+        worker-type: OpenPGPSigner
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
@@ -86,10 +75,15 @@ jobs:
       run: |
         keytool -import -alias myintermediatecacert -file intermediate_ca.cer -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} -noprompt
 
-    - name: Download Signed JAR
+    - name: Download Signed Java
       uses: actions/download-artifact@v4 
       with:
-        name: signed-input.jar
+        name: signed-input.java
+
+    - name: Download Signed Java
+      uses: actions/download-artifact@v4 
+      with:
+        name: signed-input.asc
 
     - name: List base signed dir 
       run: ls -al *
@@ -97,6 +91,6 @@ jobs:
     - name: List workspace signed dir 
       run: ls -al ${{github.workspace}}/*
 
-    - name: Verify Signed JAR
+    - name: Verify Signed Java
       run: |
-        jarsigner -verify -verbose -keystore truststore.jks -storepass ${{secrets.JKS_STOREPASS}} ${{github.workspace}}/signed-input.jar
+        gpg --verify signed-input.asc signed-input.sig
