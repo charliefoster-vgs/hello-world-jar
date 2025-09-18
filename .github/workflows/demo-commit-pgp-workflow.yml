@@ -10,8 +10,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Import PGP Public Key
+      - name: Import PGP Support 
         uses: crazy-max/ghaction-import-gpg 
+
+      - name: Import PGP Public Key
         run: echo ${{secrets.PGP_PUBLIC_KEY}} | gpg --import
 
       - name: Loop through files in a directory
