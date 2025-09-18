@@ -14,16 +14,21 @@ jobs:
         run: |
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
+          SCRIPT_DIR="./scripts"
 
           # Loop through each file in the target directory
           for file in "$TARGET_DIR"/*; do
             if [ -f "$file" ]; then # Check if it's a regular file
               echo "Processing file: $file"
+              $SCRIPT_DIR/pgp-signer.sh "$file" ${{secrets.SIGNSERVER_URL}}
               # Add your commands to process each file here
               # For example, you could run a script, copy the file, etc.
               # cp "$file" "./output_directory/"
             fi
           done
+
+      - name: List directory
+        run: ls -al 
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
