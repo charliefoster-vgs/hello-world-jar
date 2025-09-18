@@ -16,7 +16,6 @@ jobs:
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
           SCRIPT_DIR="./scripts"
           echo ${{secrets.PGP_PUBLIC_KEY_B64}} | base64 --decode > pgp_public_key.asc 
-          gpg --import pgp_public_key.asc
           echo pgp_public_key.asc | gpg --import 
 
           # Loop through each file in the target directory
