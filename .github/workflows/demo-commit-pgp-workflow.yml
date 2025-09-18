@@ -24,7 +24,7 @@ jobs:
               ls -al 
               cat "$file.asc"
               cat "$file"
-              $SCRIPTS_DIR/gpg-verify.sh
+              $SCRIPTS_DIR/gpg-verify.sh "$file.asc" "$file"
             fi
           done
 
