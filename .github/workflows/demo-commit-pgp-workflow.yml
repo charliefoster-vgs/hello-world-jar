@@ -29,9 +29,14 @@ jobs:
             fi
           done
 
-      - name: Use the output from the external script
-        run: |
-          echo "The output from the script is: ${{ steps.script_step.outputs.script_output }}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4 # Use the latest version
+        with:
+          name: generated-file
+          path: HelloWorld.asc 
+
+      - name: List dir
+        run: ls -al 
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
