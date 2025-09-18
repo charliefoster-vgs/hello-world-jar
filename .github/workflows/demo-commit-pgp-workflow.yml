@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Loop through files in a directory
-
+        run: |
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
           SCRIPT_DIR="./scripts"
