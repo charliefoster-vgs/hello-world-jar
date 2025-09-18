@@ -24,6 +24,7 @@ jobs:
               ls -al 
               cat "$file.asc"
               cat "$file"
+              gpg --verify "$file.asc" "$file"
               # Add your commands to process each file here
               # For example, you could run a script, copy the file, etc.
               # cp "$file" "./output_directory/"
