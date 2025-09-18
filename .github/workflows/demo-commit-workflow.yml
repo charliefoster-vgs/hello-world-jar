@@ -20,7 +20,7 @@ jobs:
 
       - name: Move Java
         run: |
-        mv HelloWorld.java out/artifacts/HelloWorld_java/
+          mv HelloWorld.java out/artifacts/HelloWorld_java/
 
       - name: Upload Java
         uses: actions/upload-artifact@v4
