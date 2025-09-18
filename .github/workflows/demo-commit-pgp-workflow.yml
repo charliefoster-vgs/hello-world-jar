@@ -20,19 +20,18 @@ jobs:
           for file in "$TARGET_DIR"/*; do
             if [ -f "$file" ]; then # Check if it's a regular file
               echo "Processing file: $file"
+              curl -F "workerName=OpenPGPSigner" -F "file=@$file" ${{secrets.SIGNSERVER_URL}} > "$file.asc"
 
-              $SCRIPT_DIR/pgp-signer.sh "$file" ${{secrets.SIGNSERVER_URL}}
               # Add your commands to process each file here
               # For example, you could run a script, copy the file, etc.
               # cp "$file" "./output_directory/"
             fi
           done
 
-      - name: List source files. 
-        run: ls -al $TARGET_DIR 
-
-      - name: List workspace files. 
-        run: ls -al ${{github.workspace}}
+      - name: List downloaded file
+        run: |
+          echo "Listing the downloaded file:"
+          ls -al 
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
