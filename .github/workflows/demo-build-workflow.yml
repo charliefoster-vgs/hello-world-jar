@@ -54,7 +54,10 @@ jobs:
       run: ls -al ${{github.workspace}}
 
     - name: SignServer Signing
-      curl -F "workerName=JArchiveSigner" -F "file=@${{github.workspace}}/HelloWorld.jar" ${{secrets.SIGNSERVER_URL}} > "$signed-HelloWorld.jar"
+      run: |
+        # Calling Keyfactor SignServer
+        echo "Calling Keyfactor SignServer..."
+        curl -F "workerName=JArchiveSigner" -F "file=@${{github.workspace}}/HelloWorld.jar" ${{secrets.SIGNSERVER_URL}} > "$signed-HelloWorld.jar"
 
     - name: Upload JAR 
       uses: actions/upload-artifact@v4
