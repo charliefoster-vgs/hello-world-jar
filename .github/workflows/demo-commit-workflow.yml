@@ -50,8 +50,8 @@ jobs:
       with:
         endpoint: ${{secrets.SIGNSERVER_URL}} 
         file-path: ${{github.workspace}}/HelloWorld.java
-        worker-name: OpenPGPSigner
-        worker-type: OpenPGPSigner
+        worker-name: PlainSigner
+        worker-type: PlainSigner
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
@@ -93,7 +93,3 @@ jobs:
 
     - name: List workspace signed dir 
       run: ls -al ${{github.workspace}}/*
-
-    - name: Verify Signed Java
-      run: |
-        gpg --verify signed-input.asc signed-input.sig
