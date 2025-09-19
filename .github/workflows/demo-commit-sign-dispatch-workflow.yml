@@ -39,6 +39,11 @@ jobs:
       - name: List target
         run: ls -al $TARGET_DIR
 
+      - name: Create artifact files
+        id: prepare-artifact
+        run: |
+          mkdir -p signed-artifacts 
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
