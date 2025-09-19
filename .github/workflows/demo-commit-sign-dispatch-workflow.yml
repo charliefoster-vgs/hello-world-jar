@@ -31,8 +31,10 @@ jobs:
             fi
           done
 
+      - name: List workspace
+        run: |
           echo "List workspace..."
-          ls -al ${{github.workspace}}
+          ls -al ${{github.workspace}}/HelloWorld/src/com/example/helloworld
 
       - name: List target
         run: ls -al $TARGET_DIR
@@ -42,9 +44,9 @@ jobs:
         with:
           name: signed-artifacts
           path: |
-            $TARGET_DIR/*.java 
-            $TARGET_DIR/*.asc 
-
+            ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.java
+            ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.asc
+  
   test:
     runs-on: ubuntu-latest
     steps:
