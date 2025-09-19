@@ -34,6 +34,9 @@ jobs:
           echo "List workspace..."
           ls -al ${{github.workspace}}
 
+      - name: List target
+        run: ls -al $TARGET_DIR
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
