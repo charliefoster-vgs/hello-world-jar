@@ -34,8 +34,8 @@ jobs:
         with:
           name: signed-artifacts
           path: |
-            ./*.java 
-            ./*.asc
+            ${{github.workspace}}/*.java 
+            ${{github.workspace}}/*.asc 
 
   test:
     runs-on: ubuntu-latest
