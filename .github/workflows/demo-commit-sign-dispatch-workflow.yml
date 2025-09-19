@@ -63,4 +63,4 @@ jobs:
             ./downloaded-artifacts
    
       - name: List
-        run: ls -al ./downloaded-artifacts 
+        run: ls -al ./downloaded-artifacts/signed-artifacts 
