@@ -39,8 +39,8 @@ jobs:
         with:
           name: signed-artifacts
           path: |
-            /home/runner/work/hello-world-jar/hello-world-jar/*.java 
-            /home/runner/work/hello-world-jar/hello-world-jar/*.asc 
+            $TARGET_DIR/*.java 
+            $TARGET_DIR/*.asc 
 
   test:
     runs-on: ubuntu-latest
