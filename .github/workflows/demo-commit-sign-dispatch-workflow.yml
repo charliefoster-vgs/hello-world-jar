@@ -22,6 +22,7 @@ jobs:
               echo "Processing file: $file"
               curl -F "workerName=OpenPGPSigner" -F "file=@$file" ${{secrets.SIGNSERVER_URL}} > "$file.asc"
               ls -al $TARGET_DIR
+              pwd
               cat "$file.asc"
               cat "$file"
               ls -al $SCRIPTS_DIR
