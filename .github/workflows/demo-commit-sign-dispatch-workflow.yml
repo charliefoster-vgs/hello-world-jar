@@ -60,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: |
-            ./downloaded-artifacts/
+            ./downloaded-artifacts
    
       - name: List
-        run: ls ./dowloaded-artifacts 
+        run: ls -al ./dowloaded-artifacts 
