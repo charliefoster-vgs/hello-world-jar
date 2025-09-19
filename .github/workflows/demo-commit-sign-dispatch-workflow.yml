@@ -46,7 +46,7 @@ jobs:
           path: |
             ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.java
             ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.asc
-  
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +55,7 @@ jobs:
         with:
           name: signed-artifacts
           path: |
-            ${{github.workspace}}/HelloWorld/src/com/example/helloworld
+            ./downloaded-artifacts/
    
       - name: List
         run: ls -al 
