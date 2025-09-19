@@ -53,6 +53,7 @@ jobs:
             ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.asc
 
   test:
+    needs: sign
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
