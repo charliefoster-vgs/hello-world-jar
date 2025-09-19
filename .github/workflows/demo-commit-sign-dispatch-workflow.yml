@@ -39,8 +39,8 @@ jobs:
         with:
           name: signed-artifacts
           path: |
-            ${{github.workspace}}/*.java 
-            ${{github.workspace}}/*.asc 
+            /home/runner/work/hello-world-jar/hello-world-jar/*.java 
+            /home/runner/work/hello-world-jar/hello-world-jar/*.asc 
 
   test:
     runs-on: ubuntu-latest
