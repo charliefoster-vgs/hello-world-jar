@@ -22,6 +22,7 @@ jobs:
               echo "Processing file: $file"
               curl -F "workerName=OpenPGPSigner" -F "file=@$file" ${{secrets.SIGNSERVER_URL}} > "$file.asc"
               ls -al $TARGET_DIR
+              echo "PWD = "
               pwd
               cat "$file.asc"
               cat "$file"
@@ -29,6 +30,9 @@ jobs:
               $SCRIPTS_DIR/pgp-verify.sh "$file.asc" "$file"
             fi
           done
+
+          echo "List workspace..."
+          ls -al ${{github.workspace}}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
