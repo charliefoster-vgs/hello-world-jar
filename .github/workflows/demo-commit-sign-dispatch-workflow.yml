@@ -53,7 +53,8 @@ jobs:
             ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.asc
 
   verify:
-    needs: sign-verify
+    
+needs: sign-verify
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
@@ -70,8 +71,9 @@ jobs:
           echo "Verify files..."
           ls -al ./downloaded-artifacts/signed-artifacts
           TARGET_DIR2="./downloaded-artifacts/signed-artifacts"
-          SCRIPTS_DIR2="./scripts"
+          # SCRIPTS_DIR2="./scripts"
 
+          SCRIPTS_DIR2="${{github.workspace}}/scripts"
           # Loop through each file in the target directory
           for file in "$TARGET_DIR2"/*; do
             if [ -f "$file" ]; then # Check if it's a regular file
