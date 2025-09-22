@@ -1,7 +1,7 @@
-name: Demo Commit Sign Dispatch GitHub Actions Workflow
+name: Demo Commit Sign Push GitHub Actions Workflow
 
-on:  
-  workflow_dispatch:
+on: 
+  workflow_dispatch:   
 
 jobs:
   sign-verify:
@@ -10,7 +10,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Loop through source files 
+      - name: Loop through source files
         run: |
           # Define the directory to loop through
           TARGET_DIR="./HelloWorld/src/com/example/helloworld" 
@@ -22,63 +22,9 @@ jobs:
               echo "Processing file: $file"
               curl -F "workerName=OpenPGPSigner" -F "file=@$file" ${{secrets.SIGNSERVER_URL}} > "$file.asc"
               ls -al $TARGET_DIR
-              echo "PWD = "
-              pwd
               cat "$file.asc"
               cat "$file"
               ls -al $SCRIPTS_DIR
               $SCRIPTS_DIR/pgp-verify.sh "$file.asc" "$file"
             fi
           done
-
-      - name: List workspace
-        run: |
-          echo "List workspace..."
-          ls -al ${{github.workspace}}/HelloWorld/src/com/example/helloworld
-
-      - name: List target
-        run: ls -al $TARGET_DIR
-
-      - name: Create artifact files
-        id: prepare-artifact
-        run: |
-          mkdir -p signed-artifacts 
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: signed-artifacts
-          path: |
-            ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.java
-            ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.asc
-
-  verify:
-    needs: sign-verify
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: |
-            ./downloaded-artifacts
-
-      - name: List files
-        run: ls -al ./downloaded-artifacts/signed-artifacts
-
-      - name: Verify files
-        run: |
-          echo "Verify files..."
-          ls -al ./downloaded-artifacts/signed-artifacts
-          TARGET_DIR2="./downloaded-artifacts/signed-artifacts"
-          SCRIPTS_DIR2="./scripts"
-
-	  ls -al $SCRIPTS_DIR2
-
-          # Loop through each file in the target directory
-          for file in "$TARGET_DIR2"/*; do
-            if [ -f "$file" ]; then # Check if it's a regular file
-              echo "Processing file verify: $file"
-              $SCRIPTS_DIR2/pgp-verify.sh "$file.asc" "$file"
-            fi
-          done
-
