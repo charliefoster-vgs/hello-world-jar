@@ -69,3 +69,14 @@ jobs:
         run: |
           echo "Verify files..."
           ls -al ./downloaded-artifacts/signed-artifacts
+          TARGET_DIR2="./downloaded-artifacts/signed-artifacts"
+          SCRIPTS_DIR2="./scripts"
+
+          # Loop through each file in the target directory
+          for file in "$TARGET_DIR2"/*; do
+            if [ -f "$file" ]; then # Check if it's a regular file
+              echo "Processing file verify: $file"
+              $SCRIPTS_DIR2/pgp-verify.sh "$file.asc" "$file"
+            fi
+          done
+
