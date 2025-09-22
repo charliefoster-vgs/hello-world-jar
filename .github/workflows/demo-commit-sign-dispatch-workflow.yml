@@ -70,9 +70,10 @@ jobs:
           echo "Verify files..."
           ls -al ./downloaded-artifacts/signed-artifacts
           TARGET_DIR2="./downloaded-artifacts/signed-artifacts"
-          # SCRIPTS_DIR2="./scripts"
+          SCRIPTS_DIR2="./scripts"
 
-          SCRIPTS_DIR2="${{github.workspace}}/scripts"
+	  ls -al $SCRIPTS_DIR2
+
           # Loop through each file in the target directory
           for file in "$TARGET_DIR2"/*; do
             if [ -f "$file" ]; then # Check if it's a regular file
