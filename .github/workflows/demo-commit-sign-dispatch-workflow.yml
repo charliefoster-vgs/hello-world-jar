@@ -64,6 +64,7 @@ jobs:
    
       - name: Verify files 
         run: |
+
   	  TARGET_DIR="./downloaded-artifacts/signed-artifacts"
           SCRIPTS_DIR="./scripts"
 
