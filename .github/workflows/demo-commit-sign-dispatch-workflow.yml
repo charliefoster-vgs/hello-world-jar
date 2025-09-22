@@ -62,9 +62,6 @@ jobs:
           path: |
             ./downloaded-artifacts
    
-      - name: List
-        run: ls -al ./downloaded-artifacts/signed-artifacts 
-
       - name: Verify files 
         run: |
   	  TARGET_DIR="./downloaded-artifacts/signed-artifacts"
