@@ -52,7 +52,7 @@ jobs:
             ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.java
             ${{github.workspace}}/HelloWorld/src/com/example/helloworld/*.asc
 
-  test:
+  verify:
     needs: sign-verify
     runs-on: ubuntu-latest
     steps:
