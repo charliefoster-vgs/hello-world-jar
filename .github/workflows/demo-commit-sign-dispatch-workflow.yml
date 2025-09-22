@@ -64,3 +64,8 @@ jobs:
 
       - name: List files
         run: ls -al ./downloaded-artifacts/signed-artifacts
+
+      - name: Verify files
+        run: |
+          echo "Verify files..."
+          ls -al ./downloaded-artifacts/signed-artifacts
