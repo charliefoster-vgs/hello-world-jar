@@ -56,6 +56,7 @@ jobs:
 
     - name: Download SignServer Client Cert
       run: |
+        echo $SIGNSERVER_CLIENT_CERT
         echo -n $SIGNSERVER_CLIENT_CERT | base64 -d > ${{github.workspace}}/client-cert.p12
       env: 
         SIGNSERVER_CLIENT_CERT: ${{secrets.SIGNSERVER_CLIENT_CERT}} 
