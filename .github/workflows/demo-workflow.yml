@@ -68,7 +68,7 @@ jobs:
         file-path: ${{github.workspace}}/HelloWorld.jar 
         worker-name: JArchiveSigner
         worker-type: JArchiveSigner
-        client-cert: ${{github.workspace}}/cient-cert.p12 
+        client-cert: ${{github.workspace}}/client-cert.p12 
         password: ${{secrets.SIGNSERVER_CLIENT_CRED}}
 
   verify:
