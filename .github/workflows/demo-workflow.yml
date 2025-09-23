@@ -53,6 +53,13 @@ jobs:
     - name: List workspace
       run: ls -al ${{github.workspace}}
 
+
+    - name: Download SignServer Client Cert
+      run: |
+        echo -n $SIGNSERVER_CLIENT_CERT | base64 -d > ${{github.workspace}}/client-cert.p12
+      env: 
+        SIGNSERVER_CLIENT_CERT: ${{secrets.SIGNSERVER_CLIENT_CERT}} 
+
     - name: SignServer Signing
       uses: Keyfactor/signserver-signing-action@v1.0.0
       with:
@@ -60,6 +67,8 @@ jobs:
         file-path: ${{github.workspace}}/HelloWorld.jar 
         worker-name: JArchiveSigner
         worker-type: JArchiveSigner
+        client-cert: ${{github.workspace}}/cient-cert.p12 
+        password: ${{secrets.SIGNSERVER_CLIENT_CRED}}
 
   verify:
     runs-on: ubuntu-latest # The type of runner that the job will run on
